@@ -10,9 +10,22 @@ public class PriorityQueueTests
     // Expected Result: 
     // Defect(s) Found: 
     public void TestPriorityQueue_1()
+    
     {
-        var priorityQueue = new PriorityQueue();
-        Assert.Fail("Implement the test case and then remove this.");
+         var pq = new PriorityQueue();
+        pq.Enqueue("A", 1);
+        pq.Enqueue("B", 3); // Highest priority
+        pq.Enqueue("C", 2);
+        pq.Enqueue("D", 3); // Same priority as B
+
+        // First dequeue → B (first among highest priority)
+        Assert.AreEqual("B", pq.Dequeue());
+        // Second dequeue → D (next among highest priority)
+        Assert.AreEqual("D", pq.Dequeue());
+        // Third dequeue → C
+        Assert.AreEqual("C", pq.Dequeue());
+        // Fourth dequeue → A
+        Assert.AreEqual("A", pq.Dequeue());
     }
 
     [TestMethod]
@@ -21,9 +34,26 @@ public class PriorityQueueTests
     // Defect(s) Found: 
     public void TestPriorityQueue_2()
     {
-        var priorityQueue = new PriorityQueue();
-        Assert.Fail("Implement the test case and then remove this.");
-    }
+        var pq = new PriorityQueue();
 
-    // Add more test cases as needed below.
+        try
+        {
+            pq.Dequeue();
+            Assert.Fail("Exception should have been thrown.");
+        }
+        catch (InvalidOperationException e)
+        {
+            Assert.AreEqual("The queue is empty.", e.Message);
+        }
+        catch (AssertFailedException)
+        {
+            throw;
+        }
+        catch (Exception e)
+        {
+            Assert.Fail($"Unexpected exception type {e.GetType()} caught: {e.Message}");
+        }
+    }
 }
+
+
