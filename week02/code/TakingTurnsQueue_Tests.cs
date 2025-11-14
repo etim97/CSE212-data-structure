@@ -12,6 +12,12 @@ public class TakingTurnsQueueTests
     // run until the queue is empty
     // Expected Result: Bob, Tim, Sue, Bob, Tim, Sue, Tim, Sue, Tim, Tim
     // Defect(s) Found: 
+    // Defect(s) Found:
+    // - The queue did not correctly cycle players based on the number of turns.
+    // - After a player's turns reached zero, they were still being re-added.
+    // - The order of repetition did not match expected behavior.
+    // - The queue ended either too early or too late due to incorrect Length handling.
+
     public void TestTakingTurnsQueue_FiniteRepetition()
     {
         var bob = new Person("Bob", 2);
@@ -44,6 +50,11 @@ public class TakingTurnsQueueTests
     // After running 5 times, add George with 3 turns.  Run until the queue is empty.
     // Expected Result: Bob, Tim, Sue, Bob, Tim, Sue, Tim, George, Sue, Tim, George, Tim, George
     // Defect(s) Found: 
+    // Defect(s) Found:
+    // - Adding a new player mid-rotation did not insert them into the queue correctly.
+    // - The queue logic did not recalculate order after adding George.
+    // - Some players were skipped or repeated incorrectly after the new player was added.
+
     public void TestTakingTurnsQueue_AddPlayerMidway()
     {
         var bob = new Person("Bob", 2);
@@ -86,6 +97,11 @@ public class TakingTurnsQueueTests
     // Run 10 times.
     // Expected Result: Bob, Tim, Sue, Bob, Tim, Sue, Tim, Sue, Tim, Tim
     // Defect(s) Found: 
+    // Defect(s) Found:
+    // - Negative turns (also representing infinite turns) were not treated as infinite.
+    // - The implementation incorrectly modified or decremented negative turn values.
+    // - The queue removed Tim prematurely even though he should repeat forever.
+
     public void TestTakingTurnsQueue_ForeverZero()
     {
         var timTurns = 0;
@@ -94,8 +110,7 @@ public class TakingTurnsQueueTests
         var tim = new Person("Tim", timTurns);
         var sue = new Person("Sue", 3);
 
-        Person[] expectedResult = [bob, tim, sue, bob, tim, sue, tim, sue, tim, tim];
-
+      Person[] expectedResult = [bob, tim, sue, bob, tim, sue, tim, sue, tim, tim];
         var players = new TakingTurnsQueue();
         players.AddPerson(bob.Name, bob.Turns);
         players.AddPerson(tim.Name, tim.Turns);
@@ -117,6 +132,10 @@ public class TakingTurnsQueueTests
     // Run 10 times.
     // Expected Result: Tim, Sue, Tim, Sue, Tim, Sue, Tim, Tim, Tim, Tim
     // Defect(s) Found: 
+    // Defect(s) Found:
+     // - GetNextPerson() did not throw InvalidOperationException when queue was empty.
+     // - Error message did not match the required text: "No one in the queue."
+
     public void TestTakingTurnsQueue_ForeverNegative()
     {
         var timTurns = -3;

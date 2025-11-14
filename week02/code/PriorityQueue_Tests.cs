@@ -7,8 +7,14 @@ public class PriorityQueueTests
 {
     [TestMethod]
     // Scenario: 
-    // Expected Result: 
-    // Defect(s) Found: 
+    // Expected Result:  
+    // Scenario: Enqueue items A(1), B(3), C(2), D(3). Dequeue four times.
+    // Expected Result: Highest priority items come out first in FIFO order: B, D, C, A.
+    // Defect(s) Found:
+    // - The priority comparison used '>=' instead of '>' which caused the LAST highest-priority
+    //   item to be selected instead of the FIRST.
+    // - This broke FIFO behavior for items with the same priority.
+    // - Dequeue returned D before B, which is incorrect because B was enqueued first.
     public void TestPriorityQueue_1()
     
     {
@@ -30,8 +36,13 @@ public class PriorityQueueTests
 
     [TestMethod]
     // Scenario: 
-    // Expected Result: 
-    // Defect(s) Found: 
+    // Expected Result:  
+    // Scenario: Enqueue items A(1), B(3), C(2), D(3). Dequeue four times.
+    // Expected Result: Highest priority items come out first in FIFO order: B, D, C, A.
+    // Defect(s) Found:
+    // - Dequeue did not throw an InvalidOperationException when the queue was empty.
+    // - The exception message did not match the required text: "The queue is empty."
+    // - This could lead to unhandled exceptions or incorrect error handling in client code.
     public void TestPriorityQueue_2()
     {
         var pq = new PriorityQueue();
